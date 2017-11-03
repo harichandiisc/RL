@@ -20,7 +20,7 @@ def check_won(state, side):
         return True
     return False
 
-def choose_next(state, side):
+def choose_next_random(state, side):
     non_filled_count = 9 - np.count_nonzero(state)
     if non_filled_count == 0:
         return False
@@ -34,6 +34,25 @@ def choose_next(state, side):
                 index = index + 1
     return True
 
+def choose_next_greedy(state, side):
+    non_filled_count = 9 - np.count_nonzero(state)
+    if non_filled_count == 0:
+        return False
+    index = 0
+    list_states = []
+    max_value_state = -1 
+    for i in range(0,3):
+        for j in range(0,3):
+            if state[i, j] == 0:
+                new_state = np.array(state)
+                new_state[i, j] = side
+                if value_map[str(new_state)] > max_value_state: 
+                    max_value_state = value_map[str(new_state)]
+                    list_states = [np.copy(new_state)]
+                else if value_map[str(new_state)] == max_value_state:
+                    list_states.append(np.copy(new_state))
+                index = index + 1
+    return True
 
 state = np.matrix([[0,0,0], [0,0,0], [0,0,0]])
 
